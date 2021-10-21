@@ -16,7 +16,7 @@
       <button class="sortBtn" @click="selectionsort">SelectionSort</button>
     </div>
     <div class="options">
-      <div><label>Speed</label><input v-model="speed" /></div>
+      <div><label>Miliseconds per Swap/Comparison</label><input v-model="speed" /></div>
       <div><label>Number of values</label><input v-model="valueCount" /></div>
     </div>
   </main>
