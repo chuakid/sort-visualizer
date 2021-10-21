@@ -6,7 +6,7 @@
         :class="{ swap: value.swap, compare: value.compare }"
         v-for="value in values"
         :key="value"
-        :style="'height:' + (value.val / max) * 100 + '%'"
+        :style="'height:' + (value.val) * 100 + '%'"
       ></div>
     </div>
     <div class="buttons">
@@ -30,7 +30,6 @@ export default {
   data() {
     return {
       steps: [],
-      max: 1000,
       values: [],
       valueCount: 50,
       workingValues: [],
@@ -41,7 +40,7 @@ export default {
     generateValues() {
       this.values = [];
       for (let i = 0; i < this.valueCount; i++) {
-        this.values.push({ val: Math.random() * this.max, swap: false, compare: false });
+        this.values.push({ val: Math.random(), swap: false, compare: false });
       }
       this.steps = [];
     },
