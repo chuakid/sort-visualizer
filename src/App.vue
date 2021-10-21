@@ -6,7 +6,7 @@
         :class="{ swap: value.swap, compare: value.compare }"
         v-for="value in values"
         :key="value"
-        :style="'height:' + (value.val) * 100 + '%'"
+        :style="'height:' + value.val * 100 + '%'"
       ></div>
     </div>
     <div class="buttons">
@@ -14,6 +14,7 @@
       <button class="sortBtn" @click="bubblesort">BubbleSort</button>
       <button class="sortBtn" @click="quicksort">Quicksort</button>
       <button class="sortBtn" @click="selectionsort">SelectionSort</button>
+      <button class="sortBtn" @click="insertionsort">InsertionSort</button>
     </div>
     <div class="options">
       <div><label>Miliseconds per Swap/Comparison</label><input v-model="speed" /></div>
@@ -111,6 +112,19 @@ export default {
           }
         }
         this.swap(largest_i, i);
+      }
+      this.playAnims();
+    },
+    insertionsort() {
+      this.workingValues = this.values.map((x) => x);
+      for (let i = 0; i < this.workingValues.length; i++) {
+        for (let j = i; j > 0; j--) {
+          if (this.compare(j, j - 1)) {
+            this.swap(j, j - 1);
+          } else {
+            break;
+          }
+        }
       }
       this.playAnims();
     },
