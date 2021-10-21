@@ -15,6 +15,7 @@
       <button class="sortBtn" @click="quicksort">Quicksort</button>
       <button class="sortBtn" @click="selectionsort">SelectionSort</button>
       <button class="sortBtn" @click="insertionsort">InsertionSort</button>
+      <button class="sortBtn" @click="bogosort">Bogosort</button>
     </div>
     <div class="options">
       <div><label>Miliseconds per Swap/Comparison</label><input v-model="speed" /></div>
@@ -35,10 +36,13 @@ export default {
       valueCount: 50,
       workingValues: [],
       speed: 1,
+      sorting: false,
     };
   },
   methods: {
     generateValues() {
+      this.sorting = false;
+      clearTimeout;
       this.values = [];
       for (let i = 0; i < this.valueCount; i++) {
         this.values.push({ val: Math.random(), swap: false, compare: false });
@@ -125,7 +129,30 @@ export default {
       }
       this.playAnims();
     },
-    bogosort() {},
+    bogosort() {
+      this.sorting = true;
+      const self = this;
+      function checksorted() {
+        for (let i = 0; i < self.values.length - 1; i++) {
+          if (self.values[i].val > self.values[i + 1].val) {
+            return false;
+          }
+        }
+        return true;
+      }
+      function shuffle() {
+        if (self.sorting) {
+          for (let i = self.values.length - 1; i > 0; i--) {
+            const randomIndex = Math.floor(Math.random() * (i + 1));
+            [self.values[i].val, self.values[randomIndex].val] = [self.values[randomIndex].val, self.values[i].val];
+          }
+          if (!checksorted()) {
+            setTimeout(shuffle, self.speed);
+          }
+        }
+      }
+      shuffle();
+    },
     playSwap(step) {
       [this.values[step.first], this.values[step.second]] = [this.values[step.second], this.values[step.first]];
       this.values[step.first].swap = false;
