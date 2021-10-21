@@ -171,8 +171,8 @@ main {
 .bar {
   flex: 1;
   align-self: flex-end;
-  background-color: black;
-  border: 1px solid rgb(51, 51, 51);
+  background-color: rgb(207, 207, 207);
+  border: 1px solid rgb(128, 128, 128);
 }
 .swap {
   background-color: teal;
