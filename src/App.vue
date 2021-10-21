@@ -46,10 +46,7 @@ export default {
       this.steps = [];
     },
     swap(i, j) {
-      const temp = this.workingValues[i];
-      this.workingValues[i] = this.workingValues[j];
-      this.workingValues[j] = temp;
-
+      [this.workingValues[i], this.workingValues[j]] = [this.workingValues[j], this.workingValues[i]];
       this.steps.push({ type: "swap", first: i, second: j });
     },
     compare(i, j) {
@@ -128,6 +125,7 @@ export default {
       }
       this.playAnims();
     },
+    bogosort() {},
     playSwap(step) {
       const temp = this.values[step.first];
       this.values[step.first] = this.values[step.second];
