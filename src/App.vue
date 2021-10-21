@@ -127,9 +127,7 @@ export default {
     },
     bogosort() {},
     playSwap(step) {
-      const temp = this.values[step.first];
-      this.values[step.first] = this.values[step.second];
-      this.values[step.second] = temp;
+      [this.values[step.first], this.values[step.second]] = [this.values[step.second], this.values[step.first]];
       this.values[step.first].swap = false;
       this.values[step.second].swap = false;
       setTimeout(this.playAnims, this.speed);
