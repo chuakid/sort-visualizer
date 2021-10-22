@@ -25,165 +25,24 @@
 </template>
 
 <script>
+import * as sorting from "./sorting";
+import store from "./data";
 export default {
   mounted() {
     this.generateValues();
   },
   data() {
-    return {
-      steps: [],
-      values: [],
-      valueCount: 50,
-      workingValues: [],
-      speed: 1,
-      sorting: false,
-    };
+    return store;
   },
   methods: {
+    ...sorting.algos,
     generateValues() {
       this.sorting = false;
-      clearTimeout;
       this.values = [];
       for (let i = 0; i < this.valueCount; i++) {
         this.values.push({ val: Math.random(), swap: false, compare: false });
       }
       this.steps = [];
-    },
-    swap(i, j) {
-      if (i !== j) {
-        [this.workingValues[i], this.workingValues[j]] = [this.workingValues[j], this.workingValues[i]];
-        this.steps.push({ type: "swap", first: i, second: j });
-      }
-    },
-    compare(i, j) {
-      if (i !== j) {
-        this.steps.push({ type: "compare", first: i, second: j });
-        return this.workingValues[i].val < this.workingValues[j].val;
-      }
-    },
-    quicksort() {
-      this.steps = [];
-      let self = this;
-      self.workingValues = self.values.map((x) => x);
-      function quicksorter(low, high) {
-        if (low < high) {
-          let pi = partition(low, high);
-          quicksorter(low, pi - 1);
-          quicksorter(pi + 1, high);
-        }
-      }
-      function partition(low, high) {
-        let pivot_spot = low - 1; //Current spot for pivot - 1
-        for (let i = low; i <= high; i++) {
-          if (self.compare(i, high)) {
-            pivot_spot++; //If a[i] is smaller then pivot belongs to to a[i+1]
-            if (pivot_spot != i) {
-              self.swap(pivot_spot, i);
-            }
-          }
-        }
-        self.swap(pivot_spot + 1, high);
-        return pivot_spot + 1;
-      }
-      quicksorter(0, self.workingValues.length - 1);
-      self.playAnims();
-    },
-    bubblesort() {
-      let swapCount = 1;
-      this.steps = []; //reset steps if ongoing sort
-      this.workingValues = this.values.map((x) => x);
-      for (let i = this.workingValues.length - 1; i > 0; i--) {
-        if (swapCount === 0) {
-          break;
-        }
-        swapCount = 0;
-        for (let j = 0; j < i; j++) {
-          this.compare(j, j + 1);
-          if (this.workingValues[j].val > this.workingValues[j + 1].val) {
-            this.swap(j, j + 1);
-            swapCount++;
-          }
-        }
-      }
-      this.playAnims();
-    },
-    selectionsort() {
-      this.workingValues = this.values.map((x) => x);
-      for (let i = this.workingValues.length - 1; i > 0; i--) {
-        let largest_i = 0;
-        for (let j = 0; j <= i; j++) {
-          if (this.compare(largest_i, j)) {
-            largest_i = j;
-          }
-        }
-        this.swap(largest_i, i);
-      }
-      this.playAnims();
-    },
-    insertionsort() {
-      this.workingValues = this.values.map((x) => x);
-      for (let i = 0; i < this.workingValues.length; i++) {
-        for (let j = i; j > 0; j--) {
-          if (this.compare(j, j - 1)) {
-            this.swap(j, j - 1);
-          } else {
-            break;
-          }
-        }
-      }
-      this.playAnims();
-    },
-    bogosort() {
-      this.sorting = true;
-      const self = this;
-      function checksorted() {
-        for (let i = 0; i < self.values.length - 1; i++) {
-          if (self.values[i].val > self.values[i + 1].val) {
-            return false;
-          }
-        }
-        return true;
-      }
-      function shuffle() {
-        if (self.sorting) {
-          for (let i = self.values.length - 1; i > 0; i--) {
-            const randomIndex = Math.floor(Math.random() * (i + 1));
-            [self.values[i].val, self.values[randomIndex].val] = [self.values[randomIndex].val, self.values[i].val];
-          }
-          if (!checksorted()) {
-            setTimeout(shuffle, self.speed);
-          }
-        }
-      }
-      shuffle();
-    },
-    playSwap(step) {
-      [this.values[step.first], this.values[step.second]] = [this.values[step.second], this.values[step.first]];
-      this.values[step.first].swap = false;
-      this.values[step.second].swap = false;
-      setTimeout(this.playAnims, this.speed);
-    },
-    playAnims() {
-      if (this.steps.length > 0) {
-        const step = this.steps.shift();
-        switch (step.type) {
-          case "swap":
-            this.values[step.first].swap = true;
-            this.values[step.second].swap = true;
-            setTimeout(() => {
-              this.playSwap(step);
-            }, this.speed);
-            break;
-          case "compare":
-            this.values[step.first].compare = true;
-            this.values[step.second].compare = true;
-            setTimeout(() => {
-              this.values[step.first].compare = false;
-              this.values[step.second].compare = false;
-              this.playAnims();
-            }, this.speed);
-        }
-      }
     },
   },
 };
