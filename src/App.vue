@@ -50,12 +50,16 @@ export default {
       this.steps = [];
     },
     swap(i, j) {
-      [this.workingValues[i], this.workingValues[j]] = [this.workingValues[j], this.workingValues[i]];
-      this.steps.push({ type: "swap", first: i, second: j });
+      if (i !== j) {
+        [this.workingValues[i], this.workingValues[j]] = [this.workingValues[j], this.workingValues[i]];
+        this.steps.push({ type: "swap", first: i, second: j });
+      }
     },
     compare(i, j) {
-      this.steps.push({ type: "compare", first: i, second: j });
-      return this.workingValues[i].val < this.workingValues[j].val;
+      if (i !== j) {
+        this.steps.push({ type: "compare", first: i, second: j });
+        return this.workingValues[i].val < this.workingValues[j].val;
+      }
     },
     quicksort() {
       this.steps = [];
