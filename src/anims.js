@@ -4,11 +4,12 @@ function playSwap(step) {
     [data.values[step.first], data.values[step.second]] = [data.values[step.second], data.values[step.first]];
     data.values[step.first].swap = false;
     data.values[step.second].swap = false;
-    setTimeout(playAnims, data.speed);
+    setTimeout(playAnim, data.speed);
 }
-export function playAnims() {
+
+function playAnim() {
     if (data.steps.length > 0) {
-        const step = data.steps.shift();
+        const step = data.steps.pop();
         switch (step.type) {
             case "swap":
                 data.values[step.first].swap = true;
@@ -23,8 +24,14 @@ export function playAnims() {
                 setTimeout(() => {
                     data.values[step.first].compare = false;
                     data.values[step.second].compare = false;
-                    playAnims();
+                    playAnim();
                 }, data.speed);
         }
     }
+}
+
+
+export function playAnims() {
+    data.steps.reverse(); 
+    playAnim();
 }
