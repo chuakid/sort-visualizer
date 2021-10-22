@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import * as sorting from "./sorting";
+import { algos } from "./sorting";
 import store from "./data";
 export default {
   mounted() {
@@ -35,7 +35,7 @@ export default {
     return store;
   },
   methods: {
-    ...sorting.algos,
+    ...algos,
     generateValues() {
       this.sorting = false;
       this.values = [];
